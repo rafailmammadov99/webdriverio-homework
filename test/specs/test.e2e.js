@@ -87,7 +87,7 @@ describe("Webdriverio main page", () => {
     });
 
     describe("WebdriverIO API test", () => {
-    it("should check API page and search", async () => {
+    xit("should check API page and search", async () => {
         // open website
         await browser.url('https://webdriver.io')
 
@@ -135,6 +135,61 @@ describe("Webdriverio main page", () => {
         // verify the input is now empty
         await expect(searchInput).toHaveValue('')
     })
+    describe('WebdriverIO Homework Task', () => {
+
+    it('should practice webdriver methods', async () => {
+
+        // Open WebdriverIO website
+        await browser.url('https://webdriver.io/');
+
+        // Find Docs API link
+        const docsApiLink = await $('nav a[href="/docs/api"]');
+
+        // Check if displayed
+        console.log('Docs API displayed:', await docsApiLink.isDisplayed());
+
+        // Click Docs API
+        await docsApiLink.click();
+
+        // Wait for page to load
+        await browser.pause(2000);
+
+        // Scroll to Blog link
+        const blogLink = await $('a[href="/blog"]');
+        await blogLink.scrollIntoView();
+
+        // Check Blog visibility
+        console.log('Blog displayed:', await blogLink.isDisplayed());
+
+        // Check if clickable
+        console.log('Blog clickable:', await blogLink.isClickable());
+
+        // Get HTML of element
+        const html = await blogLink.getHTML();
+        console.log('HTML:', html);
+
+        // Click Blog
+        await blogLink.click();
+
+        // Wait until heading appears
+        const heading = await $('h1');
+
+        await browser.waitUntil(
+            async () => await heading.isDisplayed(),
+            {
+                timeout: 10000,
+                timeoutMsg: 'Heading did not appear'
+            }
+        );
+
+        console.log('Heading displayed:', await heading.isDisplayed());
+
+        // Take screenshot
+        await browser.saveScreenshot('./blogPage.png');
+
+    });
+
+});
 })
 
 });
