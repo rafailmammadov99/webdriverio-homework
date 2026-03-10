@@ -135,61 +135,59 @@ describe("Webdriverio main page", () => {
         // verify the input is now empty
         await expect(searchInput).toHaveValue('')
     })
-    describe('WebdriverIO Homework Task', () => {
+    describe('WebdriverIO Homework Tests', () => {
 
-    it('should practice webdriver methods', async () => {
+    it('Test Case 1: Homepage loads', async () => {
+        await browser.url('https://webdriver.io/')
 
-        // Open WebdriverIO website
-        await browser.url('https://webdriver.io/');
+        const title = await browser.getTitle()
+        await expect(title).toContain('WebdriverIO')
+    })
 
-        // Find Docs API link
-        const docsApiLink = await $('nav a[href="/docs/api"]');
+    it('Test Case 2: Navigate to API page', async () => {
+        await browser.url('https://webdriver.io/')
 
-        // Check if displayed
-        console.log('Docs API displayed:', await docsApiLink.isDisplayed());
+        const api = await $('=API')
+        await api.click()
 
-        // Click Docs API
-        await docsApiLink.click();
+        const url = await browser.getUrl()
+        await expect(url).toContain('/docs/api')
+    })
 
-        // Wait for page to load
-        await browser.pause(2000);
+    it('Test Case 3: Search functionality', async () => {
+        await browser.url('https://webdriver.io/')
 
-        // Scroll to Blog link
-        const blogLink = await $('a[href="/blog"]');
-        await blogLink.scrollIntoView();
+        const searchButton = await $('.DocSearch-Button')
+        await searchButton.click()
 
-        // Check Blog visibility
-        console.log('Blog displayed:', await blogLink.isDisplayed());
+        const searchInput = await $('#docsearch-input')
+        await searchInput.setValue('browser')
 
-        // Check if clickable
-        console.log('Blog clickable:', await blogLink.isClickable());
+        const value = await searchInput.getValue()
+        await expect(value).toContain('browser')
+    })
 
-        // Get HTML of element
-        const html = await blogLink.getHTML();
-        console.log('HTML:', html);
+    it('Test Case 4: Open Blog page', async () => {
+        await browser.url('https://webdriver.io/')
 
-        // Click Blog
-        await blogLink.click();
+        const blog = await $('=Blog')
+        await blog.click()
 
-        // Wait until heading appears
-        const heading = await $('h1');
+        const url = await browser.getUrl()
+        await expect(url).toContain('/blog')
+    })
 
-        await browser.waitUntil(
-            async () => await heading.isDisplayed(),
-            {
-                timeout: 10000,
-                timeoutMsg: 'Heading did not appear'
-            }
-        );
+    it('Test Case 5: Open Docs page', async () => {
+        await browser.url('https://webdriver.io/')
 
-        console.log('Heading displayed:', await heading.isDisplayed());
+        const docs = await $('=Docs')
+        await docs.click()
 
-        // Take screenshot
-        await browser.saveScreenshot('./blogPage.png');
+        const url = await browser.getUrl()
+        await expect(url).toContain('/docs')
+    })
 
-    });
-
-});
+})
 })
 
 });
